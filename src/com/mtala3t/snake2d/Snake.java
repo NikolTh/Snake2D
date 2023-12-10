@@ -1,7 +1,7 @@
 /*
  * SnakeBody.java
  *
- * Created on 22 ãÇíæ, 2007, 10:54 Õ
+ * Created on 22 ï¿½ï¿½ï¿½ï¿½, 2007, 10:54 ï¿½
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -48,14 +48,11 @@ public class Snake {
 			snakeBody.set(i, (Ellipse2D.Double) snakeBody.get(i - 1));
 		}
 
-		if (direction == 1) {
-			decreaseY();
-		} else if (direction == 2) {
-			increaseY();
-		} else if (direction == 3) {
-			increaseX();
-		} else if (direction == 4) {
-			decreaseX();
+		if (direction == 1 || direction == 2) {
+			changeYsize(direction);
+		}
+		else if (direction == 3 || direction == 4){
+			changeXsize(direction);
 		}
 	}
 
@@ -64,36 +61,37 @@ public class Snake {
 		snakeBody.add(snakeBody.get(getLength() - 1));
 	}
 
-	public void increaseY() {
+	public void changeYsize(int z) {
+		
 		Ellipse2D.Double temp = (Ellipse2D.Double) snakeBody.get(0);
-		Ellipse2D.Double elli = new Ellipse2D.Double(temp.x, temp.y + 16,
-				temp.getWidth(), temp.getHeight());
-
-		snakeBody.set(0, (Ellipse2D.Double) elli);
-
-	}
-
-	public void decreaseY() {
-		Ellipse2D.Double temp = (Ellipse2D.Double) snakeBody.get(0);
-		Ellipse2D.Double elli = new Ellipse2D.Double(temp.x, temp.y - 16,
-				temp.getWidth(), temp.getHeight());
-
-		snakeBody.set(0, (Ellipse2D.Double) elli);
-	}
-
-	public void increaseX() {
-		Ellipse2D.Double temp = (Ellipse2D.Double) snakeBody.get(0);
-		Ellipse2D.Double elli = new Ellipse2D.Double(temp.x + 16, temp.y,
-				temp.getWidth(), temp.getHeight());
-
+		double x = temp.x;
+		double y = temp.y;
+		
+		if (z == 1) { 
+			y = y - 16;
+		}
+		else if (z == 2) {
+			y = y+ 16;
+		}
+		Ellipse2D.Double elli = new Ellipse2D.Double(x, y, temp.getWidth(), temp.getHeight());
 		snakeBody.set(0, (Ellipse2D.Double) elli);
 	}
-
-	public void decreaseX() {
+	
+	public void changeXsize(int z) {
+		
 		Ellipse2D.Double temp = (Ellipse2D.Double) snakeBody.get(0);
-		Ellipse2D.Double elli = new Ellipse2D.Double(temp.x - 16, temp.y,
+		double x = temp.x;
+		double y = temp.y;
+		
+		
+		if (z == 3) {
+			x = x + 16;
+		}
+		else if (z == 4){
+			x = x - 16;
+		}
+		Ellipse2D.Double elli = new Ellipse2D.Double(x, y,
 				temp.getWidth(), temp.getHeight());
-
 		snakeBody.set(0, (Ellipse2D.Double) elli);
 	}
 
