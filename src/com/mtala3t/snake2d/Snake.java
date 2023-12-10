@@ -22,7 +22,7 @@ public class Snake {
 	private static final int DEFAULT_SNAKE_LENGTH = 5;
 	private static final int DEFAULT_SNAKE_DIRECTION = 3;
 
-	private ArrayList<Ellipse2D.Double> snakeBody = new ArrayList<Ellipse2D.Double>();
+	public ArrayList<Ellipse2D.Double> snakeBody = new ArrayList<Ellipse2D.Double>();
 
 	private int direction;
 
@@ -95,9 +95,7 @@ public class Snake {
 		snakeBody.set(0, (Ellipse2D.Double) elli);
 	}
 
-	public ArrayList<Ellipse2D.Double> getSnakeBody() {
-		return snakeBody;
-	}
+
 
 	public int getLength() {
 		return snakeBody.size();

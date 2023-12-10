@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -24,7 +25,7 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 
 	/** Creates a new instance of GameBoard */
 
-	private Snake snake;
+	private Snake snake = new Snake();
 	private SnakeFood snakeFood;
 
 	private InputManger inputManager;
@@ -45,7 +46,6 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 		setBackground(Color.BLACK);
 		setFocusable(true);
 
-		snake = new Snake();
 		snakeFood = new SnakeFood();
 
 		inputManager = new InputManger(this);
@@ -131,15 +131,15 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 
 	public void DrawSnake(Graphics2D g2) {
 
-		for (int i = 0; i < snake.getSnakeBody().size(); i++) {
+		for (int i = 0; i < getSnakeBody().size(); i++) {
 
 			if (i == 0) {
 				g2.setColor(Color.RED);
-				g2.fill(snake.getSnakeBody().get(i));
+				g2.fill(getSnakeBody().get(i));
 
 			} else {
 				g2.setColor(Color.ORANGE);
-				g2.draw(snake.getSnakeBody().get(i));
+				g2.draw(getSnakeBody().get(i));
 			}
 
 		}
@@ -204,18 +204,18 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 
 	public boolean isBoundryCollisioned() {
 		if (snake.getDirection() == 1) {
-			double centerY = ((Ellipse2D.Double) snake.getSnakeBody().get(0))
+			double centerY = ((Ellipse2D.Double) getSnakeBody().get(0))
 					.getMinY();
 			return centerY < 127;
 		} else if (snake.getDirection() == 2) {
-			double centerY = ((Ellipse2D.Double) snake.getSnakeBody().get(0))
+			double centerY = ((Ellipse2D.Double) getSnakeBody().get(0))
 					.getMaxY();
 			return centerY > 591;
 		} else if (snake.getDirection() == 3) {
-			double centerX = ((Ellipse2D.Double) snake.getSnakeBody().get(0)).x;
+			double centerX = ((Ellipse2D.Double) getSnakeBody().get(0)).x;
 			return centerX > 819;
 		} else if (snake.getDirection() == 4) {
-			double centerX = ((Ellipse2D.Double) snake.getSnakeBody().get(0))
+			double centerX = ((Ellipse2D.Double) getSnakeBody().get(0))
 					.getMinX();
 			return centerX < 227.0;
 		}
@@ -225,45 +225,37 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 	public boolean isSelfCollisioned() {
 
 		if (snake.getDirection() == 1) {
-			for (int i = 1; i < snake.getSnakeBody().size(); i++) {
-				if ((((Ellipse2D.Double) snake.getSnakeBody().get(0)).getMinY() == ((Ellipse2D.Double) snake
-						.getSnakeBody().get(i)).getMaxY())
-						&& (((Ellipse2D.Double) snake.getSnakeBody().get(0))
-								.getCenterX() == ((Ellipse2D.Double) snake
-								.getSnakeBody().get(i)).getCenterX())) {
+			for (int i = 1; i < getSnakeBody().size(); i++) {
+				if ((((Ellipse2D.Double) getSnakeBody().get(0)).getMinY() == ((Ellipse2D.Double)getSnakeBody().get(i)).getMaxY())
+						&& (((Ellipse2D.Double) getSnakeBody().get(0))
+								.getCenterX() == ((Ellipse2D.Double) getSnakeBody().get(i)).getCenterX())) {
 					return true;
 				}
 			}
 
 		} else if (snake.getDirection() == 2) {
-			for (int i = 1; i < snake.getSnakeBody().size(); i++) {
-				if ((((Ellipse2D.Double) snake.getSnakeBody().get(0)).getMaxY() == ((Ellipse2D.Double) snake
-						.getSnakeBody().get(i)).getMinY())
-						&& (((Ellipse2D.Double) snake.getSnakeBody().get(0))
-								.getCenterX() == ((Ellipse2D.Double) snake
-								.getSnakeBody().get(i)).getCenterX())) {
+			for (int i = 1; i < getSnakeBody().size(); i++) {
+				if ((((Ellipse2D.Double) getSnakeBody().get(0)).getMaxY() == ((Ellipse2D.Double) getSnakeBody().get(i)).getMinY())
+						&& (((Ellipse2D.Double) getSnakeBody().get(0))
+								.getCenterX() == ((Ellipse2D.Double) getSnakeBody().get(i)).getCenterX())) {
 					return true;
 				}
 			}
 
 		} else if (snake.getDirection() == 3) {
-			for (int i = 1; i < snake.getSnakeBody().size(); i++) {
-				if ((((Ellipse2D.Double) snake.getSnakeBody().get(0)).getMaxX() == ((Ellipse2D.Double) snake
-						.getSnakeBody().get(i)).getMinX())
-						&& (((Ellipse2D.Double) snake.getSnakeBody().get(0))
-								.getCenterY() == ((Ellipse2D.Double) snake
-								.getSnakeBody().get(i)).getCenterY())) {
+			for (int i = 1; i < getSnakeBody().size(); i++) {
+				if ((((Ellipse2D.Double) getSnakeBody().get(0)).getMaxX() == ((Ellipse2D.Double) getSnakeBody().get(i)).getMinX())
+						&& (((Ellipse2D.Double) getSnakeBody().get(0))
+								.getCenterY() == ((Ellipse2D.Double) getSnakeBody().get(i)).getCenterY())) {
 					return true;
 				}
 			}
 
 		} else if (snake.getDirection() == 4) {
-			for (int i = 1; i < snake.getSnakeBody().size(); i++) {
-				if ((((Ellipse2D.Double) snake.getSnakeBody().get(0)).getMinX() == ((Ellipse2D.Double) snake
-						.getSnakeBody().get(i)).getMaxX())
-						&& (((Ellipse2D.Double) snake.getSnakeBody().get(0))
-								.getCenterY() == ((Ellipse2D.Double) snake
-								.getSnakeBody().get(i)).getCenterY())) {
+			for (int i = 1; i < getSnakeBody().size(); i++) {
+				if ((((Ellipse2D.Double) getSnakeBody().get(0)).getMinX() == ((Ellipse2D.Double) getSnakeBody().get(i)).getMaxX())
+						&& (((Ellipse2D.Double) getSnakeBody().get(0))
+								.getCenterY() == ((Ellipse2D.Double) getSnakeBody().get(i)).getCenterY())) {
 					return true;
 				}
 			}
@@ -351,6 +343,10 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 
 	public boolean isGameOver() {
 		return isGameOver;
+	}
+	
+	public ArrayList<Ellipse2D.Double> getSnakeBody() {
+		return snake.snakeBody;
 	}
 
 	@Override
