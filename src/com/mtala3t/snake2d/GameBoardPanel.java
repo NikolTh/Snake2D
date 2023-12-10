@@ -25,6 +25,7 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 
 	/** Creates a new instance of GameBoard */
 
+	Collision  collision = new Collision();
 	private Snake snake = new Snake();
 	private SnakeFood snakeFood;
 
@@ -185,8 +186,9 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 	}
 
 	public void checkCollision() {
+		int direction = snake.getDirection();
 
-		if (isSelfCollisioned() || isBoundryCollisioned()) {
+		if (collision.isSelfCollisioned(direction, getSnakeBody()) || collision.isBoundryCollisioned(direction, getSnakeBody())) {
 
 			isGameOver = true;
 
@@ -194,7 +196,7 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 
 		}
 
-		if (isFoodCollisioned()) {
+		if (collision.isFoodCollisioned(direction,snake.getHead(), snakeFood.getFood())) {
 
 			snake.eat();
 			snakeFood = new SnakeFood();
@@ -202,108 +204,7 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	public boolean isBoundryCollisioned() {
-		if (snake.getDirection() == 1) {
-			double centerY = ((Ellipse2D.Double) getSnakeBody().get(0))
-					.getMinY();
-			return centerY < 127;
-		} else if (snake.getDirection() == 2) {
-			double centerY = ((Ellipse2D.Double) getSnakeBody().get(0))
-					.getMaxY();
-			return centerY > 591;
-		} else if (snake.getDirection() == 3) {
-			double centerX = ((Ellipse2D.Double) getSnakeBody().get(0)).x;
-			return centerX > 819;
-		} else if (snake.getDirection() == 4) {
-			double centerX = ((Ellipse2D.Double) getSnakeBody().get(0))
-					.getMinX();
-			return centerX < 227.0;
-		}
-		return false;
-	}
-
-	public boolean isSelfCollisioned() {
-
-		if (snake.getDirection() == 1) {
-			for (int i = 1; i < getSnakeBody().size(); i++) {
-				if ((((Ellipse2D.Double) getSnakeBody().get(0)).getMinY() == ((Ellipse2D.Double)getSnakeBody().get(i)).getMaxY())
-						&& (((Ellipse2D.Double) getSnakeBody().get(0))
-								.getCenterX() == ((Ellipse2D.Double) getSnakeBody().get(i)).getCenterX())) {
-					return true;
-				}
-			}
-
-		} else if (snake.getDirection() == 2) {
-			for (int i = 1; i < getSnakeBody().size(); i++) {
-				if ((((Ellipse2D.Double) getSnakeBody().get(0)).getMaxY() == ((Ellipse2D.Double) getSnakeBody().get(i)).getMinY())
-						&& (((Ellipse2D.Double) getSnakeBody().get(0))
-								.getCenterX() == ((Ellipse2D.Double) getSnakeBody().get(i)).getCenterX())) {
-					return true;
-				}
-			}
-
-		} else if (snake.getDirection() == 3) {
-			for (int i = 1; i < getSnakeBody().size(); i++) {
-				if ((((Ellipse2D.Double) getSnakeBody().get(0)).getMaxX() == ((Ellipse2D.Double) getSnakeBody().get(i)).getMinX())
-						&& (((Ellipse2D.Double) getSnakeBody().get(0))
-								.getCenterY() == ((Ellipse2D.Double) getSnakeBody().get(i)).getCenterY())) {
-					return true;
-				}
-			}
-
-		} else if (snake.getDirection() == 4) {
-			for (int i = 1; i < getSnakeBody().size(); i++) {
-				if ((((Ellipse2D.Double) getSnakeBody().get(0)).getMinX() == ((Ellipse2D.Double) getSnakeBody().get(i)).getMaxX())
-						&& (((Ellipse2D.Double) getSnakeBody().get(0))
-								.getCenterY() == ((Ellipse2D.Double) getSnakeBody().get(i)).getCenterY())) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-
-	}
-
-	public boolean isFoodCollisioned() {
-
-		boolean collisionedWithFood = false;
-
-		int direction = snake.getDirection();
-
-		Ellipse2D.Double head = snake.getHead();
-
-		if (direction == 1) {
-			if ((head.getCenterY() == snakeFood.getFood().getCenterY())
-					&& (head.getCenterX() == snakeFood.getFood().getCenterX())) {
-				collisionedWithFood = true;
-			} else
-				collisionedWithFood = false;
-		} else if (direction == 2) {
-
-			if ((head.getCenterY() == snakeFood.getFood().getCenterY())
-					&& (head.getCenterX() == snakeFood.getFood().getCenterX())) {
-				collisionedWithFood = true;
-			} else
-				collisionedWithFood = false;
-
-		} else if (direction == 3) {
-			if ((head.getCenterX() == snakeFood.getFood().getCenterX())
-					&& (head.getCenterY() == snakeFood.getFood().getCenterY())) {
-				collisionedWithFood = true;
-			} else
-				collisionedWithFood = false;
-		} else if (direction == 4) {
-			if ((head.getCenterX() == snakeFood.getFood().getCenterX())
-					&& (head.getCenterY() == snakeFood.getFood().getCenterY())) {
-				collisionedWithFood = true;
-			} else
-				collisionedWithFood = false;
-		}
-
-		return collisionedWithFood;
-
-	}
+	
 
 	public void startGame() {
 
