@@ -26,7 +26,8 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 	/** Creates a new instance of GameBoard */
 
 	Collision  collision = new Collision();
-	private Snake snake = new Snake();
+	SnakeSize snakesize = new SnakeSize();
+	Snake snake = new Snake();
 	private SnakeFood snakeFood;
 
 	private InputManger inputManager;
@@ -93,18 +94,18 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		doDrawing(g);
+		doDrawing(g, snake.getDirection());
 	}
 
-	public void doDrawing(Graphics g) {
+	public void doDrawing(Graphics g, int dir) {
 
 		Graphics2D g2 = (Graphics2D) g;
 
 		if (isGameRunning()) {
 
-			snake.move();
+			snakesize.move(dir);
 
-			checkCollision();
+			checkCollision(dir);
 
 			DrawSnakeFood(g2);
 
@@ -185,8 +186,7 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 		this.snake.setDirection(direction);
 	}
 
-	public void checkCollision() {
-		int direction = snake.getDirection();
+	public void checkCollision(int direction) {
 
 		if (collision.isSelfCollisioned(direction, getSnakeBody()) || collision.isBoundryCollisioned(direction, getSnakeBody())) {
 
@@ -196,9 +196,9 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 
 		}
 
-		if (collision.isFoodCollisioned(direction,snake.getHead(), snakeFood.getFood())) {
+		if (collision.isFoodCollisioned(direction,snakesize.getHead(), snakeFood.getFood())) {
 
-			snake.eat();
+			snakesize.eat();
 			snakeFood = new SnakeFood();
 			playerScore += 5;
 		}
@@ -247,7 +247,7 @@ public class GameBoardPanel extends JPanel implements ActionListener {
 	}
 	
 	public ArrayList<Ellipse2D.Double> getSnakeBody() {
-		return snake.snakeBody;
+		return snakesize.snakeBody;
 	}
 
 	@Override
