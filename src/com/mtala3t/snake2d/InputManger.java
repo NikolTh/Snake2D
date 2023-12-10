@@ -1,7 +1,7 @@
 /*
  * InputManger.java
  *
- * Created on 28 ãÇíæ, 2007, 01:32 ã
+ * Created on 28 ï¿½ï¿½ï¿½ï¿½, 2007, 01:32 ï¿½
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -29,9 +29,16 @@ public class InputManger implements KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e) {
+	       int key = e.getKeyCode();
 
-		int key = e.getKeyCode();
+	       handleDirectionKeys(key);
+	       handleGameControlKeys(key);
+	   }
 
+	public void keyReleased(KeyEvent e) {
+	}
+
+	private void handleDirectionKeys(int key) {
 		if (key == KeyEvent.VK_UP) {
 
 			gameBoard.changeSnakeDirection(1);
@@ -47,24 +54,29 @@ public class InputManger implements KeyListener {
 		} else if (key == KeyEvent.VK_LEFT) {
 
 			gameBoard.changeSnakeDirection(4);
-
-		} else if (key == KeyEvent.VK_SPACE) {
-
-			if (gameBoard.isGameRunning()) {
-				gameBoard.pauseGame();
-
-			} else {
-				gameBoard.startGame();
-
-			}
-
-		} else if (key == KeyEvent.VK_ESCAPE) {
-
-			System.exit(0);
 		}
 	}
-
-	public void keyReleased(KeyEvent e) {
+	
+	private void handleGameControlKeys(int key) {
+		if (key == KeyEvent.VK_SPACE) {
+			toggleGamePause();
+		}
+		else if (key == KeyEvent.VK_ESCAPE) {
+			exitGame();
+		}
+	    
 	}
+
+	    private void toggleGamePause() {
+	        if (gameBoard.isGameRunning()) {
+	            gameBoard.pauseGame();
+	        } else {
+	            gameBoard.startGame();
+	        }
+	    }
+
+	    private void exitGame() {
+	        System.exit(0);
+	    }
 
 }
